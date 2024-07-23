@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'crm',
 ]
 
 MIDDLEWARE = [
@@ -122,3 +123,4 @@ STATIC_URL = '/font_statics/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'statics'),
 )
+LOGIN_URL = '/login/'

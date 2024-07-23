@@ -5,7 +5,7 @@ from django.contrib.auth.models import  User
 
 
 class UserProfile(models.Model):
-    user = models.ForeignKey(User)
+    user = models.OneToOneField(User)
     name = models.CharField(max_length=64,verbose_name="realName")
     role = models.ManyToManyField("Role",blank=True,null=True)
 
@@ -16,6 +16,7 @@ class UserProfile(models.Model):
 class Role(models.Model):
 
     name = models.CharField(max_length=64,unique=True)
+    menu = models.ManyToManyField('Menus', blank=True)
     def __str__(self):
         return self.name
 
@@ -37,7 +38,7 @@ class CustomerInfo(models.Model):
     referral_from = models.ForeignKey("self",blank=True,null=True,verbose_name="Referral")
     consult_courses = models.ManyToManyField("Course",verbose_name="consult_courses")
     consult_content = models.TextField(verbose_name="consult_content")
-    status_choices = ((0,'未报名'),(1,'已报名'),(2,'已退学'))
+    status_choices = ((0,'no sign up'),(1,'has signed up'),(2,'has quited'))
     status = models.SmallIntegerField(choices=status_choices)
     consultant = models.ForeignKey("UserProfile",verbose_name="courseConsultant")
     date = models.DateField(auto_now_add=True)
@@ -154,5 +155,19 @@ class Branch(models.Model):
     addr = models.CharField(max_length=128,blank=True,null=True)
     def __str__(self):
         return self.name
+
+class Menus(models.Model):
+    name = models.CharField(max_length=64)
+    url_type_choices = ((0, 'absolute'),(1, 'dynamic'))
+    url_type = models.SmallIntegerField(choices=url_type_choices, default=0)
+    url_name = models.CharField(max_length=128)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        unique_together = (
+            ('name', 'url_name'),
+        )
 
 
