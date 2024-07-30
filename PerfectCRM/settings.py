@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'crm',
+    'kingAdmin',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,8 @@ ROOT_URLCONF = 'PerfectCRM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join( BASE_DIR, 'templates' )]
+        'DIRS': [os.path.join( BASE_DIR, 'templates' ),
+                 os.path.join( BASE_DIR, 'kingAdmin/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -122,5 +124,6 @@ USE_TZ = True
 STATIC_URL = '/font_statics/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'statics'),
+    os.path.join(BASE_DIR, 'kingAdmin/statics'),
 )
 LOGIN_URL = '/login/'

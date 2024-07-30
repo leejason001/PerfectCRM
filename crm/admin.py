@@ -4,8 +4,13 @@ from __future__ import unicode_literals
 from django.contrib import admin
 import models
 
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ['name', 'source', 'contact_type','status', 'date']
+    list_filter = ['source', 'consultant', 'status', 'date']
+
+
 # Register your models here.
-admin.site.register(models.CustomerInfo)
+admin.site.register(models.CustomerInfo, CustomerAdmin)
 admin.site.register(models.CustomerFollowUp)
 admin.site.register(models.ClassList)
 admin.site.register(models.Course)
