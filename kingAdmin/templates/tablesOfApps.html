@@ -1,5 +1,12 @@
 {% extends 'kingAdminIndex.html' %}
 
 {% block rightPart %}
-     <h1 class="page-header">Tables</h1>
+     {% for appName, tables in apps.items %}
+     <h1 class="page-header">{{ appName }}</h1>
+     <table>
+        {% for tableName in tables.keys %}
+        <tr><td>{{ tableName }}</td></tr>
+        {% endfor %}
+     </table>
+     {% endfor %}
 {% endblock %}
