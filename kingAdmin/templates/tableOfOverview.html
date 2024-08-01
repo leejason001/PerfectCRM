@@ -1,0 +1,14 @@
+{% extends 'kingAdminIndex.html' %}
+{% load myTags %}
+
+
+{% block rightPart %}
+    <table>
+    {% for item in list_display %}
+        <th style="padding-right:40px">{{ item }}</th>
+    {% endfor %}
+    {% for row in rows%}
+        {% displayTheRow row list_display %}
+    {% endfor %}
+    </table>
+{% endblock %}

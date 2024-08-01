@@ -16,3 +16,13 @@ def tablesOfApps(request):
         print(appName)
     return render(request, 'tablesOfApps.html', {'apps': sites.site.enabled_admin})
 
+@login_required
+def tableOfOverview(request, appName, tableName):
+    configTableClass = sites.site.enabled_admin[appName][tableName]
+    rows = configTableClass.model.objects.all()
+    return render(request, 'tableOfOverview.html',{'list_display':configTableClass.list_display, 'rows':rows})
+
+
+
+
+

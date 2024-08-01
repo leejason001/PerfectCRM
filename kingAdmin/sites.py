@@ -11,6 +11,9 @@ class adminSite(object):
             configModelClass = BaseKingAdmin()
         else:
             configModelClass = configModelClass()
+
+        configModelClass.model = modelClass
+
         if appName not in self.enabled_admin:
             self.enabled_admin[appName] = {}
 
