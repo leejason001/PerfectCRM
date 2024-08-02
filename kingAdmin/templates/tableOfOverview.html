@@ -3,12 +3,17 @@
 
 
 {% block rightPart %}
-    <table>
-    {% for item in list_display %}
-        <th style="padding-right:40px">{{ item }}</th>
-    {% endfor %}
-    {% for row in rows%}
-        {% displayTheRow row list_display %}
-    {% endfor %}
+    <table class="table table-striped">
+        <thead>
+            {% for item in list_display %}
+            <th style="padding-right:40px">{{ item }}</th>
+            {% endfor %}
+        </thead>
+        <tbody>
+            {% for row in rows%}
+            {% displayTheRow row list_display %}
+            {% endfor %}
+        </tbody>
+
     </table>
 {% endblock %}
