@@ -3,15 +3,18 @@
 
 
 {% block rightPart %}
+    {% for filter_column in configTableClass.list_filter %}
+        {% displayFilter filter_column configTableClass %}
+    {% endfor %}
     <table class="table table-striped">
         <thead>
-            {% for item in list_display %}
+            {% for item in configTableClass.list_display %}
             <th style="padding-right:40px">{{ item }}</th>
             {% endfor %}
         </thead>
         <tbody>
             {% for row in rows%}
-            {% displayTheRow row list_display %}
+            {% displayTheRow row configTableClass.list_display %}
             {% endfor %}
         </tbody>
 

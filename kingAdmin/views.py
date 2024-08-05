@@ -20,7 +20,7 @@ def tablesOfApps(request):
 def tableOfOverview(request, appName, tableName):
     configTableClass = sites.site.enabled_admin[appName][tableName]
     rows = configTableClass.model.objects.all()
-    return render(request, 'tableOfOverview.html',{'list_display':configTableClass.list_display, 'rows':rows})
+    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'rows':rows})
 
 
 
