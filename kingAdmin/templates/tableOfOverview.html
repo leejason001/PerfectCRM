@@ -3,9 +3,11 @@
 
 
 {% block rightPart %}
+    <form>
     {% for filter_column in configTableClass.list_filter %}
         {% displayFilter filter_column configTableClass %}
     {% endfor %}
+    </form>
     <table class="table table-striped">
         <thead>
             {% for item in configTableClass.list_display %}
