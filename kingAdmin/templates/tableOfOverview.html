@@ -3,12 +3,14 @@
 
 
 {% block rightPart %}
-    <form>
-    {% for filter_column in configTableClass.list_filter %}
-        {% displayFilter filter_column configTableClass filter_conditions %}
-    {% endfor %}
-        <input type="submit">
+    {% if configTableClass.list_filter %}
+     <form>
+        {% for filter_column in configTableClass.list_filter %}
+            {% displayFilter filter_column configTableClass filter_conditions %}
+        {% endfor %}
+            <input type="submit" value="过滤">
     </form>
+    {% endif %}
     <table class="table table-striped">
         <thead>
             {% for item in configTableClass.list_display %}
