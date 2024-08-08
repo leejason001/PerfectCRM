@@ -7,13 +7,15 @@ register = template.Library()
 @register.simple_tag
 def displayTheRow(row, list_display):
     response = '<tr>'
-    for item in list_display:
-        if row._meta.get_field(item).choices:
-            column_data = getattr(row,'get_%s_display'% item)()
-        else:
-            column_data = getattr(row,item)
-
-        response += '<td>%s</td>'% column_data
+    if list_display:
+        for item in list_display:
+            if row._meta.get_field(item).choices:
+                column_data = getattr(row,'get_%s_display'% item)()
+            else:
+                column_data = getattr(row,item)
+            response += '<td>%s</td>'% column_data
+    else:
+        response += '<td>%s</td>'% row.__str__()
     response += '</tr>'
     return mark_safe(response)
 
