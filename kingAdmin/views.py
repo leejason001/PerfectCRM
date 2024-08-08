@@ -16,11 +16,19 @@ def tablesOfApps(request):
         print(appName)
     return render(request, 'tablesOfApps.html', {'apps': sites.site.enabled_admin})
 
+def getFilterConditions(request):
+    filter_conditions = {}
+    for k, v in request.GET.items():
+        if v:
+            filter_conditions[k] = v
+    return filter_conditions
 @login_required
 def tableOfOverview(request, appName, tableName):
     configTableClass = sites.site.enabled_admin[appName][tableName]
     rows = configTableClass.model.objects.all()
-    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'rows':rows})
+    filter_conditions = getFilterConditions(request)
+    print(filter_conditions)
+    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'rows':rows.filter(**filter_conditions)})
 
 
 
