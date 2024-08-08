@@ -18,12 +18,15 @@ def displayTheRow(row, list_display):
     return mark_safe(response)
 
 @register.simple_tag
-def displayFilter(filter_column, configTableClass):
+def displayFilter(filter_column, configTableClass, filter_conditions):
     try:
         selectDom = '<select name="%s">' % filter_column
         columnObj = configTableClass.model._meta.get_field( filter_column )
         for choice in columnObj.get_choices():
-            selectDom += '<option value="%s">%s</option>'%choice
+            selected = ''
+            if str(choice[0]) == filter_conditions.get(filter_column):
+                selected = 'selected'
+            selectDom += '<option value="%s" %s>%s</option>' % (choice[0], selected, choice[1])
     except AttributeError as e:
         selectDom = '<select name="%s__gte">' % filter_column
         todayObj = datetime.datetime.now()
@@ -35,8 +38,11 @@ def displayFilter(filter_column, configTableClass):
             [todayObj.replace(month=1, day=1), 'The year'],
         ]
         for choice in dateChoicesList:
+            selected = ''
             choice[0] = '' if not choice[0] else '%s-%s-%s'%(choice[0].year, choice[0].month, choice[0].day)
-            selectDom += '<option value="%s">%s</option>'%(choice[0], choice[1])
+            if str(choice[0]) == filter_conditions.get('%s__gte'%filter_column):
+                selected = 'selected'
+            selectDom += '<option value="%s" %s>%s</option>'%(choice[0], selected, choice[1])
 
     selectDom += '</select>'
     return mark_safe(selectDom)

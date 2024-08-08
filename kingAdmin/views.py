@@ -27,8 +27,9 @@ def tableOfOverview(request, appName, tableName):
     configTableClass = sites.site.enabled_admin[appName][tableName]
     rows = configTableClass.model.objects.all()
     filter_conditions = getFilterConditions(request)
-    print(filter_conditions)
-    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'rows':rows.filter(**filter_conditions)})
+
+    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':filter_conditions,
+                                                   'rows':rows.filter(**filter_conditions)})
 
 
 

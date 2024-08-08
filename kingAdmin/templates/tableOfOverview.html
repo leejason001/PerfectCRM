@@ -5,7 +5,7 @@
 {% block rightPart %}
     <form>
     {% for filter_column in configTableClass.list_filter %}
-        {% displayFilter filter_column configTableClass %}
+        {% displayFilter filter_column configTableClass filter_conditions %}
     {% endfor %}
         <input type="submit">
     </form>
