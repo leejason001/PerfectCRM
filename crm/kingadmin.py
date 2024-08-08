@@ -8,7 +8,7 @@ sites.site.register(UserProfile, userprofileKingAdmin)
 
 class customerinfoKingAdmin(BaseKingAdmin):
     list_display = ['name', 'source', 'consultant']
-    list_filter  = ['source', 'consultant']
+    list_filter  = ['source', 'consultant', 'date']
 sites.site.register(CustomerInfo, customerinfoKingAdmin)
 
 sites.site.register(Course)
