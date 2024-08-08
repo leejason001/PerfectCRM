@@ -18,10 +18,10 @@ def displayTheRow(row, list_display):
 
 @register.simple_tag
 def displayFilter(filter_column, configTableClass):
-    selectDom = '<select name=%s>' % filter_column
+    selectDom = '<select name="%s">' % filter_column
     columnObj = configTableClass.model._meta.get_field(filter_column)
     for choice in columnObj.get_choices():
-        selectDom += '<option value=%s>%s</option>'%choice
+        selectDom += '<option value="%s">%s</option>'%choice
     selectDom += '</select>'
     return mark_safe(selectDom)
 
