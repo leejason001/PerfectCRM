@@ -33,10 +33,10 @@ def tableOfOverview(request, appName, tableName):
     rowsQuerySet = rows.filter(**filter_conditions)
 
     paginator = Paginator(rowsQuerySet, 1)
-    page_obj = paginator.page(request.GET.get('page',1))
+    rowsQuerySet = paginator.page(request.GET.get('page',1))
 
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':filter_conditions,
-                                                   'rows':page_obj.object_list, 'page_obj':page_obj})
+                                                   'rows':rowsQuerySet})
 
 
 
