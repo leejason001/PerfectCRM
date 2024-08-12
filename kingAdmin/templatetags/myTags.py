@@ -61,14 +61,28 @@ def getPaginators(page_obj):
     pagerDoms = ''
     pageNumber = 1
 
+    if page_obj.has_previous():
+        pagerDoms += '''<li>
+          <a href="?page=%s" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>'''%page_obj.previous_page_number()
+
     while pageNumber <= page_obj.paginator.num_pages:
         if abs(pageNumber - page_obj.number) < MAX_PAGES:
             if pageNumber == page_obj.number:
-                thePagerDom = '<li><span>%s</span></li>'%pageNumber
+                thePagerDom = '<li class="active"><span>%s</span></li>'%pageNumber
             else:
                 thePagerDom = '<li><a href="?page=%d">%s</a></li>'%(pageNumber,pageNumber)
             pagerDoms += thePagerDom
         pageNumber +=1
+
+    if page_obj.has_next():
+        pagerDoms += '''<li>
+          <a href="?page=%s" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>'''%page_obj.next_page_number()
     return mark_safe(pagerDoms)
 
 
