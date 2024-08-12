@@ -55,3 +55,21 @@ def displayFilter(filter_column, configTableClass, filter_conditions):
 def get_modelName(configTableClass):
     return configTableClass.model._meta.model_name.upper()
 
+@register.simple_tag
+def getPaginators(page_obj):
+    MAX_PAGES = 3
+    pagerDoms = ''
+    pageNumber = 1
+
+    while pageNumber <= page_obj.paginator.num_pages:
+        if abs(pageNumber - page_obj.number) < MAX_PAGES:
+            print(pageNumber)
+            if pageNumber == page_obj.number:
+                thePagerDom = '<li><span>%s</span></li>'%pageNumber
+            else:
+                thePagerDom = '<li><a href="?page=%d">%s</a></li>'%(pageNumber,pageNumber)
+            pagerDoms += thePagerDom
+        pageNumber +=1
+    return mark_safe(pagerDoms)
+
+
