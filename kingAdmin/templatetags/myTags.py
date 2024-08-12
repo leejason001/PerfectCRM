@@ -51,3 +51,7 @@ def displayFilter(filter_column, configTableClass, filter_conditions):
     selectDom += '</select>'
     return mark_safe(selectDom)
 
+@register.simple_tag
+def get_modelName(configTableClass):
+    return configTableClass.model._meta.model_name.upper()
+
