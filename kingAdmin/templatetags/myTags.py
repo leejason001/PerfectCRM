@@ -63,7 +63,6 @@ def getPaginators(page_obj):
 
     while pageNumber <= page_obj.paginator.num_pages:
         if abs(pageNumber - page_obj.number) < MAX_PAGES:
-            print(pageNumber)
             if pageNumber == page_obj.number:
                 thePagerDom = '<li><span>%s</span></li>'%pageNumber
             else:
