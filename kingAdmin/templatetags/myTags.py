@@ -85,4 +85,22 @@ def getPaginators(page_obj):
         </li>'''%page_obj.next_page_number()
     return mark_safe(pagerDoms)
 
+@register.simple_tag
+def get_order_index (item, sorted_column, forloopIndex):
+    if item in sorted_column:
+        if sorted_column[item].startswith('-'):
+            new_sorted_index = sorted_column[item].strip('-')
+            triangleDirection = 'top'
+        else:
+            new_sorted_index = '-%s'%sorted_column[item]
+            triangleDirection = 'bottom'
+        return mark_safe('''
+            <a href="?o=%s">%s<span class="glyphicon glyphicon-triangle-%s"></span></a>
+        '''%(new_sorted_index, item, triangleDirection))
+    else:
+        return mark_safe('''
+            <a href="?o=%s">%s</a>
+        '''%(forloopIndex, item))
+
+
 

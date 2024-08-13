@@ -20,7 +20,7 @@ def tablesOfApps(request):
 def getFilterConditions(request):
     filter_conditions = {}
     for k, v in request.GET.items():
-        if 'page' == k:
+        if k in ('page', 'o'):
             continue
         if v:
             filter_conditions[k] = v
@@ -32,11 +32,24 @@ def tableOfOverview(request, appName, tableName):
     filter_conditions = getFilterConditions(request)
     rowsQuerySet = rows.filter(**filter_conditions)
 
-    paginator = Paginator(rowsQuerySet, 1)
+
+    orderIndexAndDirection = request.GET.get('o')
+    sorted_column = {}
+    if orderIndexAndDirection:
+        orderColumn = configTableClass.list_display[abs( int( orderIndexAndDirection ) )]
+        sorted_column[orderColumn] = orderIndexAndDirection
+        if orderIndexAndDirection.startswith( '-' ):
+            rowsQuerySet = rowsQuerySet.order_by( '-%s' % orderColumn )
+        else:
+            rowsQuerySet = rowsQuerySet.order_by( orderColumn )
+
+
+
+    paginator = Paginator(rowsQuerySet, 2)
     rowsQuerySet = paginator.page(request.GET.get('page',1))
 
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':filter_conditions,
-                                                   'rows':rowsQuerySet})
+                                                   'rows':rowsQuerySet, 'sorted_column':sorted_column})
 
 
 
