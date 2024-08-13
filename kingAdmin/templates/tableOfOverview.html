@@ -8,7 +8,6 @@
         {% for filter_column in configTableClass.list_filter %}
             {% displayFilter filter_column configTableClass filter_conditions %}
         {% endfor %}
-            <input style="display:none" value={{ hidden_submit_parameters }}>
             <input type="submit" value="过滤">
     </form>
     {% endif %}
@@ -16,7 +15,7 @@
         <thead>
         {% if configTableClass.list_display %}
             {% for item in configTableClass.list_display %}
-            <th><a href="?o={% get_order_index item sorted_column forloop.counter0 %}">
+            <th><a href="?o={% get_order_index item sorted_column forloop.counter0 %}{% render_filtered_paramers configTableClass %}">
                 {{ item }}{% render_order_triangle item sorted_column%}</a></th>
             {% endfor %}
         {% else %}

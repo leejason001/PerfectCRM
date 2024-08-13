@@ -108,6 +108,13 @@ def render_order_triangle (item, sorted_column):
         order_triangle = '<span class="glyphicon glyphicon-triangle-%s" aria-hidden="true"></span>'%orderDirection
     return mark_safe(order_triangle)
 
+@register.simple_tag
+def render_filtered_paramers(configTableClass):
+    paramersString = ''
+    for k, v in configTableClass.filter_conditions.items():
+        paramersString += '&%s=%s'%(k,v)
+    return paramersString
+
 
 
 

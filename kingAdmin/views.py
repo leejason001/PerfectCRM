@@ -27,10 +27,11 @@ def getFilterConditions(request):
     return filter_conditions
 @login_required
 def tableOfOverview(request, appName, tableName):
+
     configTableClass = sites.site.enabled_admin[appName][tableName]
     rows = configTableClass.model.objects.all()
-    filter_conditions = getFilterConditions(request)
-    rowsQuerySet = rows.filter(**filter_conditions)
+    configTableClass.filter_conditions = getFilterConditions(request)
+    rowsQuerySet = rows.filter(**configTableClass.filter_conditions)
 
 
     orderIndexAndDirection = request.GET.get('o')
@@ -48,7 +49,7 @@ def tableOfOverview(request, appName, tableName):
     paginator = Paginator(rowsQuerySet, 2)
     rowsQuerySet = paginator.page(request.GET.get('page',1))
 
-    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':filter_conditions,
+    return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
                                                    'rows':rowsQuerySet, 'sorted_column':sorted_column})
 
 
