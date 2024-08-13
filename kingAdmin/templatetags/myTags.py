@@ -66,33 +66,39 @@ def render_filtered_paramers(configTableClass):
         return ''
 
 @register.simple_tag
-def getPaginators(page_obj, configTableClass):
+def getPaginators(page_obj, configTableClass, sorted_column):
     MAX_PAGES = 3
     pagerDoms = ''
     pageNumber = 1
     filtered_paramers = render_filtered_paramers( configTableClass )
+
+    order_paramers = ''
+    if sorted_column:
+        order_paramers = '&o='
+        order_paramers += list(sorted_column.values())[0]
+
     if page_obj.has_previous():
         pagerDoms += '''<li>
-          <a href="?page=%s%s" aria-label="Previous">
+          <a href="?page=%s%s%s" aria-label="Previous">
             <span aria-hidden="true">&laquo;</span>
           </a>
-        </li>'''%(page_obj.previous_page_number(), filtered_paramers)
+        </li>'''%(page_obj.previous_page_number(), filtered_paramers, order_paramers)
 
     while pageNumber <= page_obj.paginator.num_pages:
         if abs(pageNumber - page_obj.number) < MAX_PAGES:
             if pageNumber == page_obj.number:
                 thePagerDom = '<li class="active"><span>%s</span></li>'%pageNumber
             else:
-                thePagerDom = '<li><a href="?page=%d%s">%s</a></li>'%(pageNumber,filtered_paramers,pageNumber)
+                thePagerDom = '<li><a href="?page=%d%s%s">%s</a></li>'%(pageNumber,filtered_paramers,order_paramers, pageNumber)
             pagerDoms += thePagerDom
         pageNumber +=1
 
     if page_obj.has_next():
         pagerDoms += '''<li>
-          <a href="?page=%s%s" aria-label="Next">
+          <a href="?page=%s%s%s" aria-label="Next">
             <span aria-hidden="true">&raquo;</span>
           </a>
-        </li>'''%(page_obj.next_page_number(), filtered_paramers)
+        </li>'''%(page_obj.next_page_number(), filtered_paramers, order_paramers)
     return mark_safe(pagerDoms)
 
 @register.simple_tag
