@@ -8,6 +8,7 @@
         {% for filter_column in configTableClass.list_filter %}
             {% displayFilter filter_column configTableClass filter_conditions %}
         {% endfor %}
+            <input type="hidden" name="o" value={% get_order_paramers sorted_column%}>
             <input type="submit" value="过滤">
     </form>
     {% endif %}

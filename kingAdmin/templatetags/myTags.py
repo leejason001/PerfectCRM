@@ -118,6 +118,11 @@ def render_order_triangle (item, sorted_column):
         order_triangle = '<span class="glyphicon glyphicon-triangle-%s" aria-hidden="true"></span>'%orderDirection
     return mark_safe(order_triangle)
 
+@register.simple_tag
+def get_order_paramers(sorted_column):
+
+        return list(sorted_column.values())[0] if sorted_column else ''
+
 
 
 
