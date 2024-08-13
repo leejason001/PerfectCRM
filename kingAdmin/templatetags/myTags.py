@@ -90,17 +90,24 @@ def get_order_index (item, sorted_column, forloopIndex):
     if item in sorted_column:
         if sorted_column[item].startswith('-'):
             new_sorted_index = sorted_column[item].strip('-')
-            triangleDirection = 'top'
         else:
             new_sorted_index = '-%s'%sorted_column[item]
-            triangleDirection = 'bottom'
-        return mark_safe('''
-            <a href="?o=%s">%s<span class="glyphicon glyphicon-triangle-%s"></span></a>
-        '''%(new_sorted_index, item, triangleDirection))
+
+        return new_sorted_index
     else:
-        return mark_safe('''
-            <a href="?o=%s">%s</a>
-        '''%(forloopIndex, item))
+        return forloopIndex
+
+@register.simple_tag
+def render_order_triangle (item, sorted_column):
+    order_triangle = ''
+    if item in sorted_column:
+        if sorted_column[item].startswith('-'):
+            orderDirection = 'bottom'
+        else:
+            orderDirection = 'top'
+        order_triangle = '<span class="glyphicon glyphicon-triangle-%s" aria-hidden="true"></span>'%orderDirection
+    return mark_safe(order_triangle)
+
 
 
 

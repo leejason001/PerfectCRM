@@ -16,7 +16,8 @@
         <thead>
         {% if configTableClass.list_display %}
             {% for item in configTableClass.list_display %}
-            <th>{% get_order_index item sorted_column forloop.counter0 %}</th>
+            <th><a href="?o={% get_order_index item sorted_column forloop.counter0 %}">
+                {{ item }}{% render_order_triangle item sorted_column%}</a></th>
             {% endfor %}
         {% else %}
             <th>{% get_modelName configTableClass %}</th>
