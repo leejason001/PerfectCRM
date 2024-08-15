@@ -3,6 +3,10 @@
 
 
 {% block rightPart %}
+    <form>
+        <input type="search" placeholder="" name="_q">
+        <input type="submit">
+    </form>
     {% if configTableClass.list_filter %}
      <form>
         {% for filter_column in configTableClass.list_filter %}

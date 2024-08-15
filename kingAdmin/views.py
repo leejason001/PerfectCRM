@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from django.contrib.auth.decorators import  login_required
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 from kingAdmin import sites
 from kingAdmin.app_setup import discoverKingAdmin
@@ -20,11 +21,23 @@ def tablesOfApps(request):
 def getFilterConditions(request):
     filter_conditions = {}
     for k, v in request.GET.items():
-        if k in ('page', 'o'):
+        if k in ('page', 'o', '_q'):
             continue
         if v:
             filter_conditions[k] = v
     return filter_conditions
+
+def doSearch(request, configTableClass, rowsQuerySet):
+    searchContents = request.GET.get('_q','').split(',')
+    if searchContents:
+        q1 = Q()
+        q1.connector = 'OR'
+        for searchItem in configTableClass.search_fields:
+            for content in searchContents:
+                content = content.strip(',')
+                q1.children.append((searchItem, content))
+        return rowsQuerySet.filter(q1)
+
 @login_required
 def tableOfOverview(request, appName, tableName):
 
@@ -32,6 +45,8 @@ def tableOfOverview(request, appName, tableName):
     rows = configTableClass.model.objects.all()
     configTableClass.filter_conditions = getFilterConditions(request)
     rowsQuerySet = rows.filter(**configTableClass.filter_conditions)
+
+    rowsQuerySet = doSearch(request, configTableClass, rowsQuerySet)
 
 
     orderIndexAndDirection = request.GET.get('o')
