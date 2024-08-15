@@ -5,6 +5,7 @@
 {% block rightPart %}
     <form>
         <input type="search" placeholder="" name="_q">
+        {% getOtherParamers request %}
         <input type="submit" value="Search">
     </form>
     {% if configTableClass.list_filter %}
