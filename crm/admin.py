@@ -5,8 +5,9 @@ from django.contrib import admin
 import models
 
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'source', 'contact_type','status', 'date']
+    list_display = ['name', 'source', 'consultant', 'contact_type','status', 'date']
     list_filter = ['source', 'consultant', 'status', 'date']
+    search_fields = ['source', 'consultant__name']
 
 
 # Register your models here.
