@@ -35,8 +35,10 @@ def doSearch(request, configTableClass, rowsQuerySet):
         for searchItem in configTableClass.search_fields:
             for content in searchContents:
                 content = content.strip(',')
-                q1.children.append((searchItem, content))
+                q1.children.append(('%s__contains'%searchItem, content))
         return rowsQuerySet.filter(q1)
+    else:
+        return rowsQuerySet
 
 @login_required
 def tableOfOverview(request, appName, tableName):
