@@ -4,12 +4,6 @@ import datetime
 
 register = template.Library()
 
-@register.simple_tag
-def getOtherParamers(request):
-    doms = ''
-    for k, v in request.GET.items():
-        doms += '<input type="hidden" name="%s" value="%s">'%(k,v)
-    return mark_safe(doms)
 
 @register.simple_tag
 def displayTheRow(row, list_display):

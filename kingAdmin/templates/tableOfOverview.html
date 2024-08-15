@@ -5,7 +5,9 @@
 {% block rightPart %}
     <form>
         <input type="search" placeholder="" name="_q">
-        {% getOtherParamers request %}
+        {% for k,v in filter_conditions.items %}
+            <input type="hidden" name="{{ k }}" value="{{ v }}">
+        {% endfor %}
         <input type="submit" value="Search">
     </form>
     {% if configTableClass.list_filter %}
