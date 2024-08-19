@@ -28,7 +28,8 @@ def getFilterConditions(request):
     return filter_conditions
 
 def doSearch(request, configTableClass, rowsQuerySet):
-    searchContents = request.GET.get('_q','').split(',')
+    configTableClass.searchContent = request.GET.get('_q','')
+    searchContents = configTableClass.searchContent.split(',')
     if searchContents:
         q1 = Q()
         q1.connector = 'OR'

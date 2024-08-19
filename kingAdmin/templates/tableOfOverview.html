@@ -4,7 +4,7 @@
 
 {% block rightPart %}
     <form>
-        <input type="search" placeholder="" name="_q">
+        <input type="search" placeholder="" name="_q" value="{{ configTableClass.searchContent }}">
         {% for k,v in filter_conditions.items %}
             <input type="hidden" name="{{ k }}" value="{{ v }}">
         {% endfor %}
