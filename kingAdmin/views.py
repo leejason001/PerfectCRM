@@ -77,7 +77,15 @@ def create_dynamic_model_form(configTableClass):
         model = configTableClass.model
         fields = "__all__"
 
-    theModelForm = type("DynamicModelForm".encode('ascii'), (ModelForm, ), {'Meta':Meta})
+    def __new__(cls, *args, **kwargs):
+        print(cls.base_fields)
+        for field_name in cls.base_fields:
+            field_obj = cls.base_fields[field_name]
+
+            field_obj.widget.attrs.update({"class":"form-control"})
+        return ModelForm.__new__(cls)
+
+    theModelForm = type("DynamicModelForm".encode('ascii'), (ModelForm, ), {'Meta':Meta, '__new__':__new__})
 
     return theModelForm
 
