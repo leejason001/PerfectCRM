@@ -9,12 +9,15 @@ register = template.Library()
 def displayTheRow(row, list_display):
     response = '<tr>'
     if list_display:
-        for item in list_display:
+        for index, item in enumerate(list_display):
             if row._meta.get_field(item).choices:
                 column_data = getattr(row,'get_%s_display'% item)()
             else:
                 column_data = getattr(row,item)
-            response += '<td>%s</td>'% column_data
+            if 0 == index:
+                response += "<td><a href='%s/change'>%s</a></td>" % (row.id, column_data)
+            else:
+                response += '<td>%s</td>'% column_data
     else:
         response += '<td>%s</td>'% row.__str__()
     response += '</tr>'
