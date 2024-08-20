@@ -19,7 +19,7 @@ def displayTheRow(row, list_display):
             else:
                 response += '<td>%s</td>'% column_data
     else:
-        response += '<td>%s</td>'% row.__str__()
+        response += "<td><a href='%s/change'>%s</a></td>"% (row.id, row.__str__())
     response += '</tr>'
     return mark_safe(response)
 
