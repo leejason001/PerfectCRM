@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import  login_required
 from django.shortcuts import render, redirect, HttpResponse
 from django.core.paginator import Paginator
 from django.db.models import Q
+from django.forms import ModelForm
 
 from kingAdmin import sites
 from kingAdmin.app_setup import discoverKingAdmin
@@ -69,9 +70,28 @@ def tableOfOverview(request, appName, tableName):
 
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
                                                    'rows':rowsQuerySet, 'sorted_column':sorted_column})
+
+def create_dynamic_model_form(configTableClass):
+
+    class Meta:
+        model = configTableClass.model
+        fields = "__all__"
+
+    theModelForm = type("DynamicModelForm".encode('ascii'), (ModelForm, ), {'Meta':Meta})
+
+    return theModelForm
+
 @login_required
 def tableChange(request, appName, modelName, rowId):
-    return render(request, 'tableChange.html')
+    configTableClass = sites.site.enabled_admin[appName][modelName]
+    theModelForm = create_dynamic_model_form(configTableClass)
+    rowData = configTableClass.model.objects.filter(id=rowId)[0]
+
+    form_obj = theModelForm(instance=rowData)
+
+
+
+    return render(request, 'tableChange.html', {'form_obj':form_obj})
 
 
 
