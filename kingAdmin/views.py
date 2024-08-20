@@ -70,8 +70,8 @@ def tableOfOverview(request, appName, tableName):
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
                                                    'rows':rowsQuerySet, 'sorted_column':sorted_column})
 @login_required
-def tableChange(appName, modelName, rowId):
-    pass
+def tableChange(request, appName, modelName, rowId):
+    return render(request, 'tableChange.html')
 
 
 
