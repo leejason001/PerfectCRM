@@ -1,7 +1,7 @@
 {% extends "kingAdminIndex.html" %}
 
 {% block rightPart %}
-<form class="form-horizontal">
+<form class="form-horizontal" method="post">{% csrf_token %}
 {% for field in form_obj %}
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">{{ field.label }}</label>
@@ -10,5 +10,10 @@
     </div>
   </div>
 {% endfor %}
+  <div class="form-group">
+      <div class="col-sm-offset-11 col-sm-2">
+          <button type="submit" class="btn btn-info">Save</button>
+      </div>
+  </div>
 </form>
 {% endblock %}
