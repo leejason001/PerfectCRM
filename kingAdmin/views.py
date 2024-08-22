@@ -48,7 +48,7 @@ def tableOfOverview(request, appName, tableName):
     configTableClass = sites.site.enabled_admin[appName][tableName]
     rows = configTableClass.model.objects.all()
     configTableClass.filter_conditions = getFilterConditions(request)
-    rowsQuerySet = rows.filter(**configTableClass.filter_conditions)
+    rowsQuerySet = rows.filter(**configTableClass.filter_conditions).order_by("-id")
 
     rowsQuerySet = doSearch(request, configTableClass, rowsQuerySet)
 
@@ -78,8 +78,9 @@ def create_dynamic_model_form(configTableClass):
         fields = "__all__"
 
     def __new__(cls, *args, **kwargs):
-        print(cls.base_fields)
+
         for field_name in cls.base_fields:
+
             field_obj = cls.base_fields[field_name]
 
             field_obj.widget.attrs.update({"class":"form-control"})
@@ -102,6 +103,22 @@ def tableChange(request, appName, modelName, rowId):
             form_obj.save()
             return redirect("/kingAdmin/%s/%s"%(appName, modelName))
     return render( request, 'tableChange.html', locals())
+
+@login_required
+def tableAdd(request, appName, modelName):
+    configTableClass = sites.site.enabled_admin[appName][modelName]
+
+    theModelForm     = create_dynamic_model_form(configTableClass)
+
+    if 'GET'== request.method:
+        form_obj = theModelForm()
+    elif 'POST' == request.method:
+        form_obj = theModelForm(data=request.POST)
+        if form_obj.is_valid():
+            form_obj.save()
+            return redirect("/kingAdmin/%s/%s"%(appName, modelName))
+
+    return render( request, 'tableAdd.html', locals())
 
 
 
