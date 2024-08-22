@@ -71,11 +71,17 @@ def tableOfOverview(request, appName, tableName):
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
                                                    'rows':rowsQuerySet, 'sorted_column':sorted_column})
 
-def create_dynamic_model_form(configTableClass):
+def create_dynamic_model_form(configTableClass, form_add=False):
 
     class Meta:
         model = configTableClass.model
         fields = "__all__"
+
+        if not form_add:
+            exclude = configTableClass.readonly_fields
+            configTableClass.need_readonly = True
+        else:
+            configTableClass.need_readonly = False
 
     def __new__(cls, *args, **kwargs):
 
@@ -108,7 +114,7 @@ def tableChange(request, appName, modelName, rowId):
 def tableAdd(request, appName, modelName):
     configTableClass = sites.site.enabled_admin[appName][modelName]
 
-    theModelForm     = create_dynamic_model_form(configTableClass)
+    theModelForm     = create_dynamic_model_form(configTableClass, True)
 
     if 'GET'== request.method:
         form_obj = theModelForm()

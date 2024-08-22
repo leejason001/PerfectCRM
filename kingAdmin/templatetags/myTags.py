@@ -133,6 +133,10 @@ def get_order_paramers(sorted_column):
 
         return list(sorted_column.values())[0] if sorted_column else ''
 
+@register.simple_tag
+def get_formObj_field_value(form_obj, field):
+    return getattr(form_obj.instance, field)
+
 
 
 
