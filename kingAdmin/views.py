@@ -94,12 +94,15 @@ def tableChange(request, appName, modelName, rowId):
     configTableClass = sites.site.enabled_admin[appName][modelName]
     theModelForm = create_dynamic_model_form(configTableClass)
     rowData = configTableClass.model.objects.filter(id=rowId)[0]
-
-    form_obj = theModelForm(instance=rowData)
-
-
-
-    return render(request, 'tableChange.html', {'form_obj':form_obj})
+    if 'GET' == request.method:
+        form_obj = theModelForm(instance=rowData)
+        print(111111111111111)
+    elif 'POST' == request.method:
+        form_obj = theModelForm(instance=rowData, data=request.POST)
+        if form_obj.is_valid():
+            form_obj.save()
+            return redirect(request, "/kingAdmin/%s/%s"%(appName, modelName))
+    return render( request, 'tableChange.html', locals())
 
 
 
