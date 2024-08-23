@@ -1,5 +1,5 @@
 {% load myTags %}
-<form class="form-horizontal" method="post">{% csrf_token %}
+<form class="form-horizontal" method="post" onsubmit="select_m2m_items()">{% csrf_token %}
   {{ form_obj.errors }}
 {% for field in form_obj %}
   <div class="form-group">
@@ -10,15 +10,15 @@
             <select id="id_{{ field.name }}_remainder" multiple class="form-control">
                 {% get_remainder field.name form_obj configTableClass.model as m2m_from_items %}
                 {% for item in m2m_from_items %}
-                <option ondblclick="moveMeToOtherSelect(this, 'id_{{ field.name }}_selected')">{{ item }}</option>
+                <option value="{{ item.id }}" ondblclick="moveMeToOtherSelect(this, 'id_{{ field.name }}_selected')">{{ item }}</option>
                 {% endfor %}
             </select>
         </div>
         <div class="col-lg-5">
-            <select id="id_{{ field.name }}_selected" multiple class="form-control">
+            <select selectTag id="id_{{ field.name }}_selected" multiple class="form-control" name="{{ field.name }}">
                 {% get_selected field.name form_obj as m2m_to_items %}
                 {% for item in m2m_to_items %}
-                 <option ondblclick="moveMeToOtherSelect(this, 'id_{{ field.name }}_remainder')">{{ item }}</option>
+                 <option value="{{ item.id }}" ondblclick="moveMeToOtherSelect(this, 'id_{{ field.name }}_remainder')">{{ item }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -47,8 +47,11 @@
 </form>
 <script>
     function moveMeToOtherSelect(ele, target_id) {
-        var option = "<option ondblclick=moveMeToOtherSelect(this,'"+$(ele).parent().attr('id')+"')>"+$(ele)[0].innerHTML+"</option>"
+        var option = "<option value='"+$(ele).attr('id')+"' ondblclick=moveMeToOtherSelect(this,'"+$(ele).parent().attr('id')+"')>"+$(ele)[0].innerHTML+"</option>"
         $("#"+target_id).append($(option))
         $(ele).remove()
+    }
+    function select_m2m_items() {
+        $("select[selectTag] option").prop('selected', true)
     }
 </script>
