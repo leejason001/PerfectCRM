@@ -47,7 +47,7 @@
 </form>
 <script>
     function moveMeToOtherSelect(ele, target_id) {
-        var option = "<option value='"+$(ele).attr('id')+"' ondblclick=moveMeToOtherSelect(this,'"+$(ele).parent().attr('id')+"')>"+$(ele)[0].innerHTML+"</option>"
+        var option = "<option value='"+$(ele).val()+"' ondblclick=moveMeToOtherSelect(this,'"+$(ele).parent().attr('id')+"')>"+$(ele)[0].innerHTML+"</option>"
         $("#"+target_id).append($(option))
         $(ele).remove()
     }
