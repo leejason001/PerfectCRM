@@ -11,6 +11,7 @@ class customerinfoKingAdmin(BaseKingAdmin):
     list_filter  = ['source', 'consultant', 'date']
     search_fields = ['contact', 'consultant__name']
     readonly_fields = ['contact', ]
+    filter_horizontal = ['consult_courses',]
 
 sites.site.register(CustomerInfo, customerinfoKingAdmin)
 

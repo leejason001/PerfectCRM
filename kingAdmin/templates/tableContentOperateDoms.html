@@ -5,9 +5,27 @@
   <div class="form-group">
     <label for="inputEmail3" class="col-sm-2 control-label">{{ field.label }}</label>
     <div class="col-sm-10">
-     {{ field }}
-     {{ field.errors.0 }}
-    </div>
+    {% if field.name in configTableClass.filter_horizontal %}
+        <div class="col-lg-5">
+            <select multiple>
+                {% get_remainder field.name form_obj configTableClass.model as m2m_from_items %}
+                {% for item in m2m_from_items %}
+                <option>{{ item }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-lg-5">
+            <select multiple>
+                {% get_selected field.name form_obj as m2m_to_items %}
+                {% for item in m2m_to_items %}
+                 <option>{{ item }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    {% else %}
+         {{ field }}
+    {% endif %}
+    </div><span>{{ field.errors.0 }}</span>
   </div>
 {% endfor %}
 {% if configTableClass.need_readonly %}

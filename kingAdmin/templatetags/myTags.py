@@ -137,6 +137,17 @@ def get_order_paramers(sorted_column):
 def get_formObj_field_value(form_obj, field):
     return getattr(form_obj.instance, field)
 
+@register.simple_tag
+def get_remainder(fieldName, form_obj, theModel):
+    theWholeSet  = set(theModel._meta.get_field(fieldName).related_model.objects.all())
+    theSelectSet = set(getattr(form_obj.instance, fieldName).all())
+    return theWholeSet - theSelectSet
+
+@register.simple_tag
+def get_selected(fieldName, form_obj):
+    theRowObj = form_obj.instance
+    return getattr(theRowObj, fieldName).all()
+
 
 
 
