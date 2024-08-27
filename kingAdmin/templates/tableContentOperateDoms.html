@@ -13,6 +13,7 @@
                 <option value="{{ item.id }}" ondblclick="moveMeToOtherSelect(this, 'id_{{ field.name }}_selected')">{{ item }}</option>
                 {% endfor %}
             </select>
+            <a onclick="moveOptionsFormThisSelectToThatSelect('id_{{ field.name }}_remainder', 'id_{{ field.name }}_selected')">Choose All</a>
         </div>
         <div class="col-lg-5">
             <select selectTag id="id_{{ field.name }}_selected" multiple class="form-control" name="{{ field.name }}">
@@ -21,6 +22,7 @@
                  <option value="{{ item.id }}" ondblclick="moveMeToOtherSelect(this, 'id_{{ field.name }}_remainder')">{{ item }}</option>
                 {% endfor %}
             </select>
+            <a onclick="moveOptionsFormThisSelectToThatSelect('id_{{ field.name }}_selected', 'id_{{ field.name }}_remainder')">Remove All</a>
         </div>
     {% else %}
          {{ field }}
@@ -53,5 +55,12 @@
     }
     function select_m2m_items() {
         $("select[selectTag] option").prop('selected', true)
+    }
+    function moveOptionsFormThisSelectToThatSelect(thisContainerId, thatContainerId) {
+        $("#"+thisContainerId+" option").each(function (index, ele) {
+            moveMeToOtherSelect(ele, thatContainerId)
+
+        })
+
     }
 </script>
