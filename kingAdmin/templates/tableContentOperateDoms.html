@@ -57,8 +57,8 @@
         $("select[selectTag] option").prop('selected', true)
     }
     function moveOptionsFormThisSelectToThatSelect(thisContainerId, thatContainerId) {
-        $("#"+thisContainerId+" option").each(function (index, ele) {
-            moveMeToOtherSelect(ele, thatContainerId)
+        $("#"+thisContainerId).children().each(function (index, ele) {
+            moveMeToOtherSelect(this, thatContainerId)
 
         })
 
