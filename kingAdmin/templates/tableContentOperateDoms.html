@@ -7,6 +7,7 @@
     <div class="col-sm-10">
     {% if field.name in configTableClass.filter_horizontal %}
         <div class="col-lg-5">
+            <input type="text" class="form-control" oninput="doRemainderFilter(this, 'id_{{ field.name }}_remainder')">
             <select id="id_{{ field.name }}_remainder" multiple class="form-control">
                 {% get_remainder field.name form_obj configTableClass.model as m2m_from_items %}
                 {% for item in m2m_from_items %}
@@ -61,6 +62,15 @@
             moveMeToOtherSelect(this, thatContainerId)
 
         })
-
+    }
+    function doRemainderFilter(ele, containerId) {
+        //console.log($(ele).val())
+        $("#"+containerId).children().each(function () {
+            if($(this).text().match($(ele).val())){
+                $(this).show()
+            } else {
+                $(this).hide()
+            }
+        })
     }
 </script>
