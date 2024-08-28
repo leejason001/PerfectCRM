@@ -126,6 +126,12 @@ def tableAdd(request, appName, modelName):
 
     return render( request, 'tableAdd.html', locals())
 
+@login_required
+def tableDelete(request, appName, modelName, rowId):
+    configTableClass = sites.site.enabled_admin[appName][modelName]
+    theRow = configTableClass.model.objects.get(id=rowId)
+    return render( request, 'tableDelete.html', locals())
+
 
 
 
