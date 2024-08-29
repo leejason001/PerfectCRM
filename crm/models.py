@@ -52,7 +52,7 @@ class Student(models.Model):
     class_grades = models.ManyToManyField("ClassList")
 
     def __str__(self):
-        return self.customer
+        return "%s"%self.customer
 
 
 class CustomerFollowUp(models.Model):

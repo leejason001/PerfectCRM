@@ -140,13 +140,43 @@ def get_formObj_field_value(form_obj, field):
 @register.simple_tag
 def get_remainder(fieldName, form_obj, theModel):
     theWholeSet  = set(theModel._meta.get_field(fieldName).related_model.objects.all())
-    theSelectSet = set(getattr(form_obj.instance, fieldName).all())
-    return theWholeSet - theSelectSet
+    try:
+        theSelectSet = set(getattr(form_obj.instance, fieldName).all())
+        return theWholeSet - theSelectSet
+    except:
+        return theWholeSet
 
 @register.simple_tag
 def get_selected(fieldName, form_obj):
     theRowObj = form_obj.instance
     return getattr(theRowObj, fieldName).all()
+
+@register.simple_tag
+def display_all_related_rows(theRow):
+    responseStr = '<ul><li><a href="/kingAdmin/%s/%s/%s/change">%s</a>'%(theRow._meta.app_label,
+                                                 theRow._meta.model_name, theRow.id, theRow)
+    responseStr += '</li>'
+    for reverse_fk_obj in theRow._meta.related_objects:
+        related_table_name = reverse_fk_obj.name
+        related_lookup_key = "%s_set"%related_table_name
+        responseStr += '<li>%s'%related_table_name
+        responseStr += '<ul>'
+        if reverse_fk_obj.get_internal_type() == "ManyToManyField":
+            for subRow in getattr( theRow, related_lookup_key ).all():
+                responseStr += '<li><a href="/kingAdmin/%s/%s/%s/change">%s</a></li>' % (subRow._meta.app_label,
+                                                          subRow._meta.model_name, subRow.id, subRow)
+        else:
+            print(related_lookup_key)
+            print(getattr( theRow, related_lookup_key ).all())
+            for subRow in getattr( theRow, related_lookup_key ).all():
+                responseStr += display_all_related_rows( subRow )
+
+        responseStr += '</ul></li>'
+
+    responseStr += '</ul>'
+    return responseStr
+
+
 
 
 

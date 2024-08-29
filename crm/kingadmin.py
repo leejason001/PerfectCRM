@@ -17,3 +17,4 @@ sites.site.register(CustomerInfo, customerinfoKingAdmin)
 
 sites.site.register(Course)
 sites.site.register(ClassList)
+sites.site.register(CustomerFollowUp)
