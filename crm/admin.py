@@ -8,6 +8,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ['name', 'source', 'consultant', 'contact_type','status', 'date']
     list_filter = ['source', 'consultant', 'status', 'date']
     search_fields = ['source', 'consultant__name']
+    filter_horizontal = ['consult_courses', ]
 
 
 # Register your models here.
@@ -21,3 +22,4 @@ admin.site.register(models.CourseRecord)
 admin.site.register(models.StudyRecord)
 admin.site.register(models.Student)
 admin.site.register(models.UserProfile)
+admin.site.register(models.Branch)
