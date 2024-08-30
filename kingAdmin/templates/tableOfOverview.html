@@ -19,8 +19,19 @@
             <input type="submit" value="过滤">
     </form>
     {% endif %}
+    <form method="POST" onsubmit="checkBeforeActions(this)">
+    {% csrf_token %}
+        <select  name="action">
+            <option value="">-----------------------</option>
+            {% for action in configTableClass.actions %}
+            <option value="{{ action }}">{{ action }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" class="btn" value="Go">
+    </form>
     <table class="table table-striped">
         <thead>
+            <th><input type="checkbox" onclick="allSelectOrNotOperate(this)"></th>
         {% if configTableClass.list_display %}
             {% for item in configTableClass.list_display %}
             <th><a href="?o={% get_order_index item sorted_column forloop.counter0 %}{% render_filtered_paramers configTableClass %}">
@@ -46,4 +57,33 @@
 
       </ul>
     </nav>
+<script>
+    function allSelectOrNotOperate(ele) {
+        if ($(ele).prop("checked") == true) {
+            $("input[tagForSelect]").prop("checked", true)
+        } else {
+            $("input[tagForSelect]").prop("checked", false)
+        }
+    }
+    function checkBeforeActions(formEle) {
+        var select_action = $("select[name='action']")
+        if(!select_action.val()){
+            alert("No options are selected!")
+            return false
+        }
+        var theCheckedBoxes = $("input[tagForSelect]").filter(":checked")
+        if(theCheckedBoxes.length == 0) {
+            alert("No checkboxesare selected!")
+            return false
+        }
+
+        submitIds = []
+        $.each(theCheckedBoxes, function (index, ele) {
+            submitIds.push($(ele).val())
+        })
+
+        var inputWithIds = "<input type='hidden' name='selected_ids' value="+JSON.stringify(submitIds)+">"
+        $(formEle).append(inputWithIds)
+    }
+</script>
 {% endblock %}

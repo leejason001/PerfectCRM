@@ -7,7 +7,7 @@ register = template.Library()
 
 @register.simple_tag
 def displayTheRow(row, list_display):
-    response = '<tr>'
+    response = '<tr><td><input type="checkbox" tagForSelect value=%s></td>'%row.id
     if list_display:
         for index, item in enumerate(list_display):
             if row._meta.get_field(item).choices:

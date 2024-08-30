@@ -68,6 +68,11 @@ def tableOfOverview(request, appName, tableName):
     paginator = Paginator(rowsQuerySet, 2)
     rowsQuerySet = paginator.page(request.GET.get('page',1))
 
+    if "POST" == request.method:
+        import json
+        select_objs = configTableClass.model.objects.filter(id__in=json.loads( request.POST.get("selected_ids") ))
+        getattr(configTableClass, request.POST.get('action'))(request, select_objs)
+
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
                                                    'rows':rowsQuerySet, 'sorted_column':sorted_column})
 
@@ -130,6 +135,9 @@ def tableAdd(request, appName, modelName):
 def tableDelete(request, appName, modelName, rowId):
     configTableClass = sites.site.enabled_admin[appName][modelName]
     theRow = configTableClass.model.objects.get(id=rowId)
+    if "POST" == request.method:
+        theRow.delete()
+        return redirect("/kingAdmin/%s/%s"%(appName, modelName))
     return render( request, 'tableDelete.html', locals())
 
 
