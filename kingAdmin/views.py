@@ -132,11 +132,12 @@ def tableAdd(request, appName, modelName):
     return render( request, 'tableAdd.html', locals())
 
 @login_required
-def tableDelete(request, appName, modelName, rowId):
+def tableDelete(request, appName, modelName, rowIdList):
     configTableClass = sites.site.enabled_admin[appName][modelName]
-    theRow = configTableClass.model.objects.get(id=rowId)
+    theRowSet = configTableClass.model.objects.filter(id__in=rowIdList)
     if "POST" == request.method:
-        theRow.delete()
+        for theRow in theRowSet:
+            theRow.delete()
         return redirect("/kingAdmin/%s/%s"%(appName, modelName))
     return render( request, 'tableDelete.html', locals())
 

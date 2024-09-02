@@ -4,9 +4,11 @@
 
 {% block rightPart %}
 <h2 class="page-header">{% get_modelName configTableClass %}</h2>
-<h4 class="page-header">删除{{ theRow }}</h4>
-{% display_all_related_rows theRow as allRelatedDoms %}
-{{ allRelatedDoms | safe }}
+<h4 class="page-header">删除{% for theRow in theRowSet %} {{ theRow }}{% endfor %}</h4>
+    {% for theRow in theRowSet %}
+        {% display_all_related_rows theRow as allRelatedDoms %}
+        {{ allRelatedDoms | safe }}
+    {% endfor %}
 <form method="POST">
     {% csrf_token %}
     <input type="submit" value="删除" class="btn btn-danger">
