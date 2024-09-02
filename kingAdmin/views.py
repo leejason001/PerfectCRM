@@ -71,7 +71,7 @@ def tableOfOverview(request, appName, tableName):
     if "POST" == request.method:
         import json
         select_objs = configTableClass.model.objects.filter(id__in=json.loads( request.POST.get("selected_ids") ))
-        return getattr(configTableClass, request.POST.get('action'))(request, appName, tableName, select_objs)
+        return getattr(configTableClass, request.POST.get('action'))(request, appName, tableName, select_objs, rowsQuerySet, sorted_column)
 
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
                                                    'rows':rowsQuerySet, 'sorted_column':sorted_column})
