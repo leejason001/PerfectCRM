@@ -1,3 +1,5 @@
+from django.shortcuts import render
+
 
 class BaseKingAdmin(object):
     list_filter = []
@@ -8,3 +10,8 @@ class BaseKingAdmin(object):
     actions = []
     def __init__(self):
         self.actions.extend(self.default_actions)
+
+    def delelteSelected(self, request, appName, tableName, querysets):
+        configTableClass = self
+        theRowSet = configTableClass.model.objects.filter( id__in=querysets )
+        return render( request, 'tableDelete.html', locals())

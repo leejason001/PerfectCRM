@@ -14,7 +14,7 @@ class customerinfoKingAdmin(BaseKingAdmin):
     filter_horizontal = ['consult_courses',]
     actions = ['change_status', ]
 
-    def change_status(self, request, querysets):
+    def change_status(self, request, appName, tableName, querysets):
         querysets.update(status=1)
 
 
