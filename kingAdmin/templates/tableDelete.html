@@ -1,0 +1,14 @@
+{% extends "kingAdminIndex.html" %}
+{% load myTags %}
+
+
+{% block rightPart %}
+<h2 class="page-header">{% get_modelName configTableClass %}</h2>
+<h4 class="page-header">删除{{ theRow }}</h4>
+{% display_all_related_rows theRow as allRelatedDoms %}
+{{ allRelatedDoms | safe }}
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="删除" class="btn btn-danger">
+</form>
+{% endblock %}
