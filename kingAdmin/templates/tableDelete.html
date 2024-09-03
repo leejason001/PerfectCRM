@@ -11,6 +11,9 @@
     {% endfor %}
 <form method="POST">
     {% csrf_token %}
+    <input type="hidden" name="delete_confirm" value="yes">
+    <input type="hidden" name="selected_ids" value="{{ request.POST.selected_ids }}">
+    <input type="hidden" name="action" value="{{ request.POST.action }}">
     <input type="submit" value="删除" class="btn btn-danger">
 </form>
 {% endblock %}
