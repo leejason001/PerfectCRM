@@ -74,7 +74,7 @@ def tableOfOverview(request, appName, tableName):
         return getattr(configTableClass, request.POST.get('action'))(request, appName, tableName, select_objs, rowsQuerySet, sorted_column)
 
     return render(request, 'tableOfOverview.html',{'configTableClass':configTableClass, 'filter_conditions':configTableClass.filter_conditions,
-                                                   'rows':rowsQuerySet, 'sorted_column':sorted_column})
+                                                   'rows':rowsQuerySet, 'sorted_column':sorted_column, 'modelName':tableName})
 
 def create_dynamic_model_form(configTableClass, form_add=False):
 

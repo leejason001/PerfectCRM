@@ -3,6 +3,11 @@
 
 
 {% block rightPart %}
+    <ol class="breadcrumb">
+        <li><a href="/kingAdmin">Home</a></li>
+        <li class="active">{{ modelName }}</li>
+    </ol>
+
     <form>
         <input type="search" placeholder="{% for search_field in configTableClass.search_fields %}{{ search_field }},{% endfor %}" name="_q" value="{{ configTableClass.searchContent }}">
         {% for k,v in filter_conditions.items %}

@@ -3,6 +3,11 @@
 
 
 {% block rightPart %}
+<ol class="breadcrumb">
+    <li><a href="/kingAdmin">Home</a></li>
+    <li><a href="/kingAdmin/{{ appName }}/{{ modelName }}/tableOfOverview.html">{{ modelName }}</a></li>
+    <li class="active">tableChange</li>
+</ol>
 <h2 class="page-header">{% get_modelName configTableClass %}</h2>
 <h4 class="page-header">修改{{ form_obj.instance }}</h4>
 {% include "tableContentOperateDoms.html" %}
