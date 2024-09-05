@@ -148,8 +148,11 @@ def get_remainder(fieldName, form_obj, theModel):
 
 @register.simple_tag
 def get_selected(fieldName, form_obj):
-    theRowObj = form_obj.instance
-    return getattr(theRowObj, fieldName).all()
+    try:
+        theRowObj = form_obj.instance
+        return getattr(theRowObj, fieldName).all()
+    except:
+        return []
 
 @register.simple_tag
 def display_all_related_rows(theRow):

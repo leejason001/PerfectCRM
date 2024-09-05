@@ -43,9 +43,11 @@
 {% endif %}
 
   <div class="form-group">
+      {% if form_obj.instance.id %}
       <div class="col-sm-2">
           <a href="{% url 'tableDelete' appName modelName form_obj.instance.id %}" class="btn btn-danger">Delete</a>
       </div>
+      {% endif %}
       <div class="col-sm-offset-11 col-sm-2">
           <button type="submit" class="btn btn-info">Save</button>
       </div>
