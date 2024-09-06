@@ -32,7 +32,20 @@
           <ul class="nav nav-sidebar">
             {% for role in request.user.userprofile.role.all %}
                 {% for menu in role.menu.all %}
-                    <li><a href="{% if menu.url_type == 0 %}{{ menu.url_name }}{% else %}{% url menu.url_name %}{% endif %}">{{ menu.name }}</a></li>
+                    {% if 0 == menu.url_type %}
+                        {% if request.path == menu.url_name %}
+                            <li class="active"><a href="{% if menu.url_type == 0 %}{{ menu.url_name }}{% else %}{% url menu.url_name %}{% endif %}">{{ menu.name }}</a></li>
+                        {% else %}
+                            <li><a href="{% if menu.url_type == 0 %}{{ menu.url_name }}{% else %}{% url menu.url_name %}{% endif %}">{{ menu.name }}</a></li>
+                        {% endif %}
+                    {% else %}
+                         {% url menu.url_name as theUrl %}
+                         {% if request.path == theUrl %}
+                            <li class="active"><a href="{% if menu.url_type == 0 %}{{ menu.url_name }}{% else %}{% url menu.url_name %}{% endif %}">{{ menu.name }}</a></li>
+                        {% else %}
+                            <li><a href="{% if menu.url_type == 0 %}{{ menu.url_name }}{% else %}{% url menu.url_name %}{% endif %}">{{ menu.name }}</a></li>
+                        {% endif %}
+                    {% endif %}
                 {% endfor %}
             {% endfor %}
           </ul>
