@@ -48,7 +48,7 @@ class CustomerInfo(models.Model):
 
 class Student(models.Model):
 
-    customer = models.ForeignKey("CustomerInfo")
+    customer = models.OneToOneField("CustomerInfo")
     class_grades = models.ManyToManyField("ClassList")
 
     def __str__(self):
@@ -92,6 +92,7 @@ class ClassList(models.Model):
     teachers = models.ManyToManyField("UserProfile",verbose_name="teacher")
     start_date = models.DateField("start_date")
     graduate_date = models.DateField("graduate_date",blank=True,null=True)
+    contract_template = models.ForeignKey("ContractTemplate",null=True, blank=True)
     def __str__(self):
 
         return "%s(%s)" %(self.course.name,self.semester)
@@ -170,4 +171,32 @@ class Menus(models.Model):
             ('name', 'url_name'),
         )
 
+class ContractTemplate(models.Model):
+    name = models.CharField(max_length=64)
+    content = models.TextField()
+    date    = models.DateField(auto_now_add=True)
 
+class StudentEnrollment(models.Model):
+    customer = models.ForeignKey("CustomerInfo")
+    class_grade = models.ForeignKey("ClassList")
+    consultant = models.ForeignKey("UserProfile")
+    contract_agreed = models.BooleanField(default=False)
+    contract_signed_date = models.DateTimeField(null=True, blank=True)
+    contract_approved = models.BooleanField(default=False)
+    contract_approved_date = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        unique_together = ("customer", "class_grade")
+    def __str__(self):
+        return "%s"%self.customer
+
+class PaymentRecord(models.Model):
+    enrollment = models.ForeignKey("StudentEnrollment")
+    payment_type_choices = ((0, 'BaoMingFei'), (1, 'XueFei'), (2, 'TuiFei'))
+    payment_type = models.SmallIntegerField(choices=payment_type_choices, default=0)
+    amount = models.IntegerField('FeiYong', default=500)
+    payee      = models.ForeignKey("UserProfile")
+    date       = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "%s"%self.enrollment

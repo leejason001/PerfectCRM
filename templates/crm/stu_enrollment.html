@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% block right-part %}
+    <h1>学员报名页</h1>
+    <form class="form-horizontal" method="post">
+        {% csrf_token %}
+      <div class="form-group">
+        <label class="col-sm-2 control-label">选择客户</label>
+        <div class="col-sm-10">
+          <select name="customer" class="form-control">
+              {% for customerInfo in customerInfoes %}
+                  <option value="{{ customerInfo.id }}">{{ customerInfo }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">选择班级</label>
+        <div class="col-sm-10">
+          <select name="class_grade" class="form-control">
+              {% for aClass in theClasses %}
+                  <option value="{{ aClass.id }}">{{ aClass }}</option>
+              {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" class="btn btn-default" value="生成报名链接" >下一步</button>
+        </div>
+      </div>
+    </form>
+    {% if theLink %}
+       <p style="text-align: center">请将链接发给学员{{ theLink }}</p>
+    {% endif %}
+
+{% endblock %}

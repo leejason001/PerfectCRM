@@ -4,5 +4,6 @@ from django.contrib import admin
 import views
 
 urlpatterns = [
-    url(r'', views.dashboard,name="sales_dashboard" ),
+    url(r'^$', views.dashboard,name="sales_dashboard" ),
+    url(r'^stu_enrollment/$', views.stu_enrollment, name="stu_enrollment"),
 ]
