@@ -3,8 +3,11 @@ from __future__ import unicode_literals
 
 from django.shortcuts import render
 from django.contrib.auth.decorators import  login_required
+from django.db.utils import IntegrityError
+
 
 from crm import models
+import myForms
 
 # Create your views here.
 @login_required
@@ -16,11 +19,23 @@ def stu_enrollment(request):
     customerInfoes = models.CustomerInfo.objects.all()
     theClasses     = models.ClassList.objects.all()
     if "POST" == request.method:
-        theEnrollment = models.StudentEnrollment.objects.create(
-            customer_id=request.POST.get('customer'),
-            class_grade_id=request.POST.get("class_grade"),
-            consultant_id=request.user.userprofile.id
-        )
-        theLink = "http://127.0.0.1:8000/crm/enrollment/%s/"%theEnrollment.id
+        customer_id=request.POST.get('customer')
+        class_grade_id = request.POST.get( "class_grade" )
+        try:
+            theEnrollment = models.StudentEnrollment.objects.create(
+                customer_id=customer_id,
+                class_grade_id=class_grade_id,
+                consultant_id=request.user.userprofile.id
+            )
+
+        except IntegrityError as e:
+            theEnrollment = models.StudentEnrollment.objects.get(customer_id=customer_id, class_grade_id=class_grade_id)
+
+        theLink = "http://127.0.0.1:8000/crm/enrollment/%s/" % theEnrollment.id
 
     return render(request, 'crm/stu_enrollment.html',locals())
+
+def enrollment(request, enrollment_id):
+    theEnrollment = models.StudentEnrollment.objects.get(id=enrollment_id)
+    customer_form = myForms.CustomerForm(instance=theEnrollment.customer)
+    return render(request, 'crm/enrollment.html', locals())
