@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render,HttpResponse
 from django.contrib.auth.decorators import  login_required
 from django.db.utils import IntegrityError
 
@@ -37,5 +37,13 @@ def stu_enrollment(request):
 
 def enrollment(request, enrollment_id):
     theEnrollment = models.StudentEnrollment.objects.get(id=enrollment_id)
-    customer_form = myForms.CustomerForm(instance=theEnrollment.customer)
+
+    if "POST" == request.method:
+        customer_form = myForms.CustomerForm( instance=theEnrollment.customer, data=request.POST )#修改数据必须这么写
+        if customer_form.is_valid():
+                customer_form.save()#theEnrollment.customer.update(**obj.cleaned_data)
+                return HttpResponse("You enroll success!")
+    else:
+        customer_form = myForms.CustomerForm( instance=theEnrollment.customer )
+
     return render(request, 'crm/enrollment.html', locals())
