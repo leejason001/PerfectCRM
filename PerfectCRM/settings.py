@@ -131,3 +131,5 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'kingAdmin/statics'),
 )
 LOGIN_URL = '/login/'
+
+ENROLLMENT_UPLOAD_FILES_DIR = os.path.join(BASE_DIR, "crm/uploadFiles/enrollment_data")

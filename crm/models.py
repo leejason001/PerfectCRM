@@ -176,6 +176,7 @@ class ContractTemplate(models.Model):
     content = models.TextField()
     date    = models.DateField(auto_now_add=True)
 
+
 class StudentEnrollment(models.Model):
     customer = models.ForeignKey("CustomerInfo")
     class_grade = models.ForeignKey("ClassList")

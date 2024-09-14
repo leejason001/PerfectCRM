@@ -1,8 +1,11 @@
 {% extends "index.html" %}
+{% block extra_css %}
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+{% endblock %}
 {% block body %}
     <h1>填写学员信息</h1>
 
-    <form onsubmit="actionsBeforeSubmit(this)" method="POST">{% csrf_token %}
+    <form onsubmit="return actionsBeforeSubmit(this)" method="POST">{% csrf_token %}
         {{ obj.errors }}
         {% for field in customer_form %}
          <div class="form-group col-lg-6">
@@ -22,16 +25,75 @@
         <div class="form-group col-lg-6">
             <label class="col-sm-2 control-label">价格</label>
             <div class="col-sm-10">
-                {{ theEnrollment.class_grade.course.price }}
+                <pre>{{ theEnrollment.class_grade.course.price }}</pre>
             </div>
         </div>
+        <hr>
+        <pre style="height: 100px">{{ theEnrollment.class_grade.contract_template.content }}</pre>
+        <input type="checkbox" name="contract_agreed">我同意合同</input>
         <input type="submit" value="提交">
-    </form>
+        </form>
+        <div>已上传文件列表</div>
+        <ul id="upLoadedFilesContainer">
+            {% for file in uploadedFiles %}
+                <li>{{ file }}</li>
+            {% endfor %}
+        </ul>
+        <form action="{% url 'enrollment_fileUpLoad' enrollment_id %}" class="dropzone" id="myAwesomeDropzone">
+            <input type="file" name="file" />
+        </form>
+
     <script>
         function actionsBeforeSubmit(formEle) {
             $.each($(formEle).find("[disabled=true]"), function (index, ele) {
                 $(this).removeAttr("disabled")
             })
+            if(!$("input[name=contract_agreed]").prop("checked")) {
+                alert("需要勾选同意协议")
+                return false
+            }
+            if($("#upLoadedFilesContainer li").length==0) {
+                alert("需要上传证件照")
+                return false
+            }
         }
+
+    </script>
+{% endblock %}
+{% block extra-js %}
+    <script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+    <script>
+        Dropzone.options.myAwesomeDropzone = {
+          paramName: "file", // The name that will be used to transfer the file
+          maxFilesize: 2, // MB
+          maxFiles:2,
+          parallelUploads:1,
+          accept: function(file, done) {
+            if (file.name == "justinbieber.jpg") {
+              done("Naha, you don't.");
+            }
+            else { done(); }
+          }
+        };
+
+        $(function() {
+          // Now that the DOM is fully loaded, create the dropzone, and setup the
+          // event listeners
+          // Prevent Dropzone from auto discovering this element:
+          Dropzone.options.myAwesomeDropzone = false;
+          var myDropzone = new Dropzone("#myAwesomeDropzone");
+          myDropzone.on("success", function(file,response) {
+            /* Maybe display some more file information on your page */
+             console.log("completet", file, response);
+             var response = JSON.parse(response);
+             if (!response.status){
+                 alert(response.errMsg);
+             }else {
+                 $("#upLoadedFilesContainer").append("<li>"+ file.name +"</li>");
+
+             }
+
+          });
+        })
     </script>
 {% endblock %}

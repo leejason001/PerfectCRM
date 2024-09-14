@@ -1,0 +1,22 @@
+{% extends 'index.html' %}
+{% block right-part %}
+    <h1>学员报名页</h1>
+    <form class="form-horizontal" method="post" onsubmit="actionsBeforeSubmit()">
+        {% csrf_token %}
+        {{ customerForm }}
+        <hr>
+        <hr>
+        <hr>
+        <hr>
+        <hr>
+        <hr>
+        {{ studentEnrollmentForm }}
+
+        <input type="submit" class="btn" value="审核通过">
+    </form>
+    <script>
+        function actionsBeforeSubmit() {
+            $(":disabled").removeAttr("disabled");
+        }
+    </script>
+{% endblock %}
