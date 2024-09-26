@@ -76,6 +76,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'PerfectCRM.wsgi.application'
+AUTH_USER_MODEL = "crm.UserProfile"
 
 
 # Database
