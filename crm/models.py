@@ -47,6 +47,7 @@ class UserProfile(AbstractBaseUser):
         unique=True,
     )
     name = models.CharField(max_length=64,verbose_name="realName")
+    role = models.ManyToManyField( "Role", blank=True, null=True )
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
@@ -56,7 +57,7 @@ class UserProfile(AbstractBaseUser):
     REQUIRED_FIELDS = ["name"]
 
     def __str__(self):
-        return self.email 
+        return self.email
 
     def get_short_name(self):
         return "alex"
@@ -81,7 +82,7 @@ class UserProfile(AbstractBaseUser):
 # class UserProfile(models.Model):
 #     user = models.OneToOneField(User)
 #
-#     role = models.ManyToManyField("Role",blank=True,null=True)
+#
 #
 #
 #     def __str__(self): #__unicode__
