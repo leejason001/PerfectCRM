@@ -56,7 +56,7 @@ class UserProfile(AbstractBaseUser):
     REQUIRED_FIELDS = ["name"]
 
     def __str__(self):
-        return self.email
+        return self.email 
 
     def get_short_name(self):
         return "alex"
