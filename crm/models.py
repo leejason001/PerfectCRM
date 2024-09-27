@@ -66,6 +66,11 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
     class Meta:
         permissions = (
             ("crm_table_list", "可以允许是正文搞自己"),
+            ("crm_table_view", "可以查看表中所有数据"),
+            ("crm_table_list_view", "可以访问表里每条数据的修改页"),
+            ("crm_table_list_change", "修改修改"),
+            ("crm_table_obj_add_view", "可以访问数据增加页"),
+            ("crm_table_obj_add", "可以创建表里的数据"),
         )
 
     # def has_perm(self, perm, obj=None):

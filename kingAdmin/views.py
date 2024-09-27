@@ -8,6 +8,7 @@ from django.db.models import Q
 from django.forms import ModelForm
 
 from kingAdmin import sites
+from kingAdmin import permissions
 from kingAdmin.app_setup import discoverKingAdmin
 
 
@@ -42,6 +43,7 @@ def doSearch(request, configTableClass, rowsQuerySet):
     else:
         return rowsQuerySet
 
+@permissions.check_permission
 @login_required
 def tableOfOverview(request, appName, tableName):
 
@@ -101,6 +103,7 @@ def create_dynamic_model_form(configTableClass, form_add=False):
 
     return theModelForm
 
+@permissions.check_permission
 @login_required
 def tableChange(request, appName, modelName, rowId):
     configTableClass = sites.site.enabled_admin[appName][modelName]
@@ -115,6 +118,7 @@ def tableChange(request, appName, modelName, rowId):
             return redirect("/kingAdmin/%s/%s"%(appName, modelName))
     return render( request, 'tableChange.html', locals())
 
+@permissions.check_permission
 @login_required
 def tableAdd(request, appName, modelName):
     configTableClass = sites.site.enabled_admin[appName][modelName]
@@ -131,6 +135,7 @@ def tableAdd(request, appName, modelName):
 
     return render( request, 'tableAdd.html', locals())
 
+@permissions.check_permission
 @login_required
 def tableDelete(request, appName, modelName, rowIdList):
     configTableClass = sites.site.enabled_admin[appName][modelName]
