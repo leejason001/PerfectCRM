@@ -27,6 +27,9 @@ def perm_check(*args,**kwargs):
         perm_kwargs = permission_val[3]
         perm_hook_func = permission_val[4] if len(permission_val)>4 else None
 
+
+
+
         if per_url_name == current_url_name: #matches current request url
             if per_method == request.method: #matches request method
                 # if not  perm_args: #if no args defined in perm dic, then set this request to passed perm
@@ -61,6 +64,8 @@ def perm_check(*args,**kwargs):
                 perm_hook_matched = False
                 if perm_hook_func:
                     perm_hook_matched = perm_hook_func(request)
+                else:
+                    perm_hook_matched = True
 
 
                 match_results = [args_matched,kwargs_matched,perm_hook_matched]
@@ -79,14 +84,14 @@ def perm_check(*args,**kwargs):
         perm_obj = '%s.%s' % (app_name,match_key)
         print("perm str:",perm_obj)
         if request.user.has_perm(perm_obj):
-            print('当前用户有此权限')
+            print('has_perm True')
             return True
         else:
-            print('当前用户没有该权限')
+            print('has_perm False')
             return False
 
     else:
-        print("未匹配到权限项，当前用户无权限")
+        print(u"未匹配到权限项，当前用户无权限")
         return False
 
 
