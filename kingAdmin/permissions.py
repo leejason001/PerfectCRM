@@ -58,10 +58,12 @@ def perm_check(*args,**kwargs):
                     kwargs_matched = True
 
                 #开始匹配自定义权限钩子函数
+                perm_hook_matched = False
+                if perm_hook_func:
+                    perm_hook_matched = perm_hook_func(request)
 
 
-
-                match_results = [args_matched,kwargs_matched]
+                match_results = [args_matched,kwargs_matched,perm_hook_matched]
                 print("--->match_results ", match_results)
                 if all(match_results): #都匹配上了
                     match_key = permission_key
@@ -85,6 +87,7 @@ def perm_check(*args,**kwargs):
 
     else:
         print("未匹配到权限项，当前用户无权限")
+        return False
 
 
 
